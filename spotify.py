@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 import requests
 import os
 import pandas as pd
+import numpy as np
 
 class SpotifyAPI:
     def __init__(self, client_id: str, client_secret: str):
@@ -41,7 +42,7 @@ class SpotifyAPI:
                 self.headers["Authorization"] = f"Bearer {access_token}"
         return access_token
     
-    def get_recommendations(self, seed_tracks: list[str], limit: int = 5):
+    def get_recommendations(self, seed_tracks: list[str], limit: int = 19):
         """
         Get recommendations based on seed tracks
         :param seed_tracks: list of seed spotify ids (e.g. "6fTt0CH2t0mdeB2N9XFG5r")
@@ -75,6 +76,7 @@ class SpotifyAPI:
 
                 predicted_songs = pd.DataFrame(predicted_songs)
                 predicted_songs = predicted_songs.drop(['type', 'uri', 'track_href', 'analysis_url'], axis=1)
+                # predicted_songs = predicted_songs.to_numpy()
                 return predicted_songs
             else:
                 print(res)
@@ -97,6 +99,9 @@ class SpotifyAPI:
                 return res.json()
 
 if __name__ == "__main__":
+    test_playlists = np.load('misc/test_playlists.npy')
+    # print(music_info)
+    # print(test_playlists)
     env_path = os.path.join('misc', '.env')
     load_dotenv(dotenv_path=env_path)
     SPOTIFY_CREDS = [os.getenv('SPOTIFY_CLIENT_ID'), 
@@ -106,14 +111,35 @@ if __name__ == "__main__":
         print("Please set the SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables")
         exit(1)
 
-    track_data = pd.read_csv('misc/music_info.csv')
-    track_data = track_data.drop(['spotify_preview_url'], axis=1)
-    track_data.info()
+    # track_data = pd.read_csv('misc/music_info.csv')
+    # track_data = track_data.drop(['spotify_preview_url'], axis=1)
+    # track_data.info()
 
     spotify = SpotifyAPI(*SPOTIFY_CREDS)
+    # print(len(test_playlists))
+    # for playlist in test_playlists:
+    playlist = test_playlists[0]
+    ids = []
+    # recommendations = []
+    for song in playlist[0:5]:
+        song = song.tolist()
+        ids.append(song[2])
+    #   print(type(song[2]))
+    # print(ids)
+    # print(len(ids))
+    
+    recommendations = spotify.get_recommendations(ids)
 
-    random_tracks = track_data.sample(5)
-    seed_tracks = random_tracks['spotify_id'].tolist()
+    # random_tracks = track_data.sample(5)
+    # seed_tracks = random_tracks['spotify_id'].tolist()
 
-    recommendations = spotify.get_recommendations(seed_tracks)
+    # for song in seed_tracks:
+    #     print(type(song))
+    # print(seed_tracks)
+    # print(len(seed_tracks))
+
+    # recommendations = spotify.get_recommendations(seed_tracks)
     print(recommendations)
+    recommendations.to_csv('misc/spotify_recs.csv')
+    # for song in playlist[0:5]:
+    #     print(song[1])
