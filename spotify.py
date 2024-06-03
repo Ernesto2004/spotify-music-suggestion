@@ -42,7 +42,7 @@ class SpotifyAPI:
                 self.headers["Authorization"] = f"Bearer {access_token}"
         return access_token
     
-    def get_recommendations(self, seed_tracks: list[str], limit: int = 19):
+    def get_recommendations(self, seed_tracks: list[str], limit: int = 10):
         """
         Get recommendations based on seed tracks
         :param seed_tracks: list of seed spotify ids (e.g. "6fTt0CH2t0mdeB2N9XFG5r")
