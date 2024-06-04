@@ -42,7 +42,7 @@ class SpotifyAPI:
                 self.headers["Authorization"] = f"Bearer {access_token}"
         return access_token
     
-    def get_recommendations(self, seed_tracks: list[str], limit: int = 10):
+    def get_recommendations(self, seed_tracks: list[str] = "", features: dict = {}, limit: int = 10):
         """
         Get recommendations based on seed tracks
         :param seed_tracks: list of seed spotify ids (e.g. "6fTt0CH2t0mdeB2N9XFG5r")
@@ -51,9 +51,10 @@ class SpotifyAPI:
         """
         url = f"{self.api_endpoint}/recommendations"
         params = {
-            "seed_tracks": ",".join(seed_tracks),
+            "seed_tracks": ",".join(seed_tracks) if seed_tracks else None,
             "limit": limit
         }
+        params = {**params, **features}
         try:
             res = requests.get(url, headers=self.headers, params=params)
         except requests.exceptions.RequestException as e:
@@ -79,8 +80,8 @@ class SpotifyAPI:
                 # predicted_songs = predicted_songs.to_numpy()
                 return predicted_songs
             else:
-                print(res)
-                return res.status_code
+                print(res.text)
+                return res
             
     def get_track_info(self, track_id: str):
         """
@@ -118,28 +119,47 @@ if __name__ == "__main__":
     spotify = SpotifyAPI(*SPOTIFY_CREDS)
     # print(len(test_playlists))
     # for playlist in test_playlists:
-    playlist = test_playlists[0]
-    ids = []
-    # recommendations = []
-    for song in playlist[0:5]:
-        song = song.tolist()
-        ids.append(song[2])
-    #   print(type(song[2]))
-    # print(ids)
-    # print(len(ids))
-    
-    recommendations = spotify.get_recommendations(ids)
-
-    # random_tracks = track_data.sample(5)
-    # seed_tracks = random_tracks['spotify_id'].tolist()
-
-    # for song in seed_tracks:
-    #     print(type(song))
-    # print(seed_tracks)
-    # print(len(seed_tracks))
-
-    # recommendations = spotify.get_recommendations(seed_tracks)
-    print(recommendations)
-    recommendations.to_csv('misc/spotify_recs.csv')
+    # playlist = test_playlists[0]
+    # ids = []
+    # # recommendations = []
     # for song in playlist[0:5]:
-    #     print(song[1])
+    #     song = song.tolist()
+    #     ids.append(song[2])
+    # #   print(type(song[2]))
+    # # print(ids)
+    # # print(len(ids))
+
+    features = {'min_danceability': 0.247,
+        'max_danceability': 0.718,
+        'min_energy': 0.478,
+        'max_energy': 0.985,
+        'min_loudness': -13.628,
+        'max_loudness': -3.094,
+        'min_speechiness': 0.0299,
+        'max_speechiness': 0.217,
+        'min_acousticness': 0.000421,
+        'max_acousticness': 0.777,
+        'min_instrumentalness': 0.0,
+        'max_instrumentalness': 0.918,
+        'min_liveness': 0.0907,
+        'max_liveness': 0.829,
+        'min_valence': 0.0666,
+        'max_valence': 0.923}
+    
+    recs = spotify.get_recommendations(seed_tracks=[''], features=features, limit=10)
+    print(recs)
+    # recommendations = spotify.get_recommendations(ids)
+
+    # # random_tracks = track_data.sample(5)
+    # # seed_tracks = random_tracks['spotify_id'].tolist()
+
+    # # for song in seed_tracks:
+    # #     print(type(song))
+    # # print(seed_tracks)
+    # # print(len(seed_tracks))
+
+    # # recommendations = spotify.get_recommendations(seed_tracks)
+    # print(recommendations)
+    # recommendations.to_csv('misc/spotify_recs.csv')
+    # # for song in playlist[0:5]:
+    # #     print(song[1])
