@@ -30,7 +30,7 @@ The project relies on various Python libraries for data processing, model traini
 
 ## Contributors
 - Ernest Sarajyan
-- Cameron Hall
-- Eesha Krishnamagaru
+- ![Cameron Hall](https://github.com/Jibb94)
+- ![Eesha Krishnamagaru](https://github.com/ekrishnamagaru)
 - Josue Martinez
 - Miguel Mascareno
