@@ -23,9 +23,14 @@ The dataset for this project is stored in the `misc` folder. It contains the nec
 ## Dependencies
 The project relies on various Python libraries for data processing, model training, and evaluation. These dependencies are listed in the `requirements.txt` file and can be installed using pip.
 
+## Model Structure
+
+![Model Flowchart (2)](https://github.com/Ernesto2004/spotify-music-suggestion/assets/52049224/d6f17db6-b39d-4281-b779-5a5758e5a910)
+
+
 ## Contributors
 - Ernest Sarajyan
-- Cameron Hall
-- Eesha Krishnamagaru
+- [Cameron Hall](https://github.com/Jibb94)
+- [Eesha Krishnamagaru](https://github.com/ekrishnamagaru)
 - Josue Martinez
 - Miguel Mascareno
