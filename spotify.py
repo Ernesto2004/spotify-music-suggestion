@@ -98,3 +98,68 @@ class SpotifyAPI:
         else:
             if res.status_code < 400:
                 return res.json()
+
+if __name__ == "__main__":
+    test_playlists = np.load('misc/test_playlists.npy')
+    # print(music_info)
+    # print(test_playlists)
+    env_path = os.path.join('misc', '.env')
+    load_dotenv(dotenv_path=env_path)
+    SPOTIFY_CREDS = [os.getenv('SPOTIFY_CLIENT_ID'), 
+                    os.getenv('SPOTIFY_CLIENT_SECRET')]
+
+    if not all(SPOTIFY_CREDS):
+        print("Please set the SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables")
+        exit(1)
+
+    # track_data = pd.read_csv('misc/music_info.csv')
+    # track_data = track_data.drop(['spotify_preview_url'], axis=1)
+    # track_data.info()
+
+    spotify = SpotifyAPI(*SPOTIFY_CREDS)
+    # print(len(test_playlists))
+    # for playlist in test_playlists:
+    # playlist = test_playlists[0]
+    # ids = []
+    # # recommendations = []
+    # for song in playlist[0:5]:
+    #     song = song.tolist()
+    #     ids.append(song[2])
+    # #   print(type(song[2]))
+    # # print(ids)
+    # # print(len(ids))
+
+    features = {'min_danceability': 0.247,
+        'max_danceability': 0.718,
+        'min_energy': 0.478,
+        'max_energy': 0.985,
+        'min_loudness': -13.628,
+        'max_loudness': -3.094,
+        'min_speechiness': 0.0299,
+        'max_speechiness': 0.217,
+        'min_acousticness': 0.000421,
+        'max_acousticness': 0.777,
+        'min_instrumentalness': 0.0,
+        'max_instrumentalness': 0.918,
+        'min_liveness': 0.0907,
+        'max_liveness': 0.829,
+        'min_valence': 0.0666,
+        'max_valence': 0.923}
+    
+    recs = spotify.get_recommendations(seed_tracks=[''], features=features, limit=10)
+    print(recs)
+    # recommendations = spotify.get_recommendations(ids)
+
+    # # random_tracks = track_data.sample(5)
+    # # seed_tracks = random_tracks['spotify_id'].tolist()
+
+    # # for song in seed_tracks:
+    # #     print(type(song))
+    # # print(seed_tracks)
+    # # print(len(seed_tracks))
+
+    # # recommendations = spotify.get_recommendations(seed_tracks)
+    # print(recommendations)
+    # recommendations.to_csv('misc/spotify_recs.csv')
+    # # for song in playlist[0:5]:
+    # #     print(song[1])
