@@ -27,6 +27,8 @@ The project relies on various Python libraries for data processing, model traini
 
 ![Model Flowchart (2)](https://github.com/Ernesto2004/spotify-music-suggestion/assets/52049224/d6f17db6-b39d-4281-b779-5a5758e5a910)
 
+## Branches
+Throughout this 10-week project, we experimented with different approaches which are documented and implemented in different branches which you can view. 
 
 ## Contributors
 - Ernest Sarajyan
