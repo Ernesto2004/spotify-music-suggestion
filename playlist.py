@@ -95,9 +95,6 @@ for feature in feature_names:
 features["seed_genres"] = playlist_df['tags'].iloc[0].split(',')[:3]
 features["seed_genres"] = ','.join(features["seed_genres"])
 
-# Spotify credentials and API interaction
-SPOTIFY_CLIENT_ID = '8fd2a7d8d5384d37bfa3b7ecb84f16c4'
-SPOTIFY_CLIENT_SECRET = '6e10fb6c946e4a7f97613133907894c2'
 
 if not SPOTIFY_CLIENT_ID or not SPOTIFY_CLIENT_SECRET:
     print("Please set the SPOTIFY_CLIENT_ID and SPOTIFY_CLIENT_SECRET environment variables")
